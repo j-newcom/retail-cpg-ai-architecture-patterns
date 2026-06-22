@@ -1,0 +1,104 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "BedrockInvoke",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:InvokeModel",
+        "bedrock:InvokeModelWithResponseStream"
+      ],
+      "Resource": [
+        "arn:aws:bedrock:*::foundation-model/anthropic.claude-sonnet-4-20250514",
+        "arn:aws:bedrock:*::foundation-model/anthropic.claude-haiku-4-20250514"
+      ]
+    },
+    {
+      "Sid": "EventBridgePublish",
+      "Effect": "Allow",
+      "Action": [
+        "events:PutEvents"
+      ],
+      "Resource": [
+        "arn:aws:events:*:*:event-bus/supply-chain-events"
+      ]
+    },
+    {
+      "Sid": "NeptuneRead",
+      "Effect": "Allow",
+      "Action": [
+        "neptune-db:ReadDataViaQuery",
+        "neptune-db:GetQueryStatus"
+      ],
+      "Resource": [
+        "arn:aws:neptune-db:*:*:*/supply-chain-graph"
+      ]
+    },
+    {
+      "Sid": "OpenSearchVectorQuery",
+      "Effect": "Allow",
+      "Action": [
+        "aoss:APIAccessAll"
+      ],
+      "Resource": [
+        "arn:aws:aoss:*:*:collection/decision-history"
+      ]
+    },
+    {
+      "Sid": "SQSSendDecisions",
+      "Effect": "Allow",
+      "Action": [
+        "sqs:SendMessage",
+        "sqs:GetQueueUrl"
+      ],
+      "Resource": [
+        "arn:aws:sqs:*:*:erp-decision-queue.fifo",
+        "arn:aws:sqs:*:*:escalation-queue"
+      ]
+    },
+    {
+      "Sid": "S3AuditWrite",
+      "Effect": "Allow",
+      "Action": [
+        "s3:PutObject"
+      ],
+      "Resource": [
+        "arn:aws:s3:::supply-chain-decisions/*"
+      ]
+    },
+    {
+      "Sid": "CloudWatchMetrics",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:PutMetricData"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringEquals": {
+          "cloudwatch:namespace": "SupplyChainAgents"
+        }
+      }
+    },
+    {
+      "Sid": "CloudWatchLogs",
+      "Effect": "Allow",
+      "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+      ],
+      "Resource": "arn:aws:logs:*:*:log-group:/aws/lambda/sc-agent-*"
+    },
+    {
+      "Sid": "SecretsRead",
+      "Effect": "Allow",
+      "Action": [
+        "secretsmanager:GetSecretValue"
+      ],
+      "Resource": [
+        "arn:aws:secretsmanager:*:*:secret:supply-chain/erp-credentials-*",
+        "arn:aws:secretsmanager:*:*:secret:supply-chain/supplier-api-keys-*"
+      ]
+    }
+  ]
+}

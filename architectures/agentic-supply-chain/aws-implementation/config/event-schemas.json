@@ -1,0 +1,138 @@
+{
+  "schemas": [
+    {
+      "detail_type": "DemandAdjustment",
+      "source_pattern": "supply-chain.agent.demand-sensing",
+      "description": "Published when the demand sensing agent detects a forecast adjustment is needed.",
+      "schema": {
+        "agent_id": "string",
+        "decision_id": "string",
+        "timestamp": "ISO-8601",
+        "confidence": "number (0.0-1.0)",
+        "payload": {
+          "adjustment_pct": "number (-30 to +30)",
+          "affected_skus": ["string"],
+          "affected_locations": ["string"],
+          "valid_days": "integer"
+        },
+        "reasoning_trace": "string",
+        "escalation_required": "boolean"
+      }
+    },
+    {
+      "detail_type": "TransferOrder",
+      "source_pattern": "supply-chain.agent.inventory-allocation",
+      "description": "Published when the allocation agent determines stock should move between DCs.",
+      "schema": {
+        "agent_id": "string",
+        "decision_id": "string",
+        "timestamp": "ISO-8601",
+        "confidence": "number (0.0-1.0)",
+        "payload": {
+          "from_location": "string (DC ID)",
+          "to_location": "string (DC ID)",
+          "sku": "string",
+          "quantity": "integer",
+          "estimated_value_usd": "number",
+          "urgency": "standard|expedited"
+        },
+        "reasoning_trace": "string"
+      }
+    },
+    {
+      "detail_type": "PurchaseOrderRecommendation",
+      "source_pattern": "supply-chain.agent.procurement",
+      "description": "Published when the procurement agent recommends placing or modifying a PO.",
+      "schema": {
+        "agent_id": "string",
+        "decision_id": "string",
+        "timestamp": "ISO-8601",
+        "confidence": "number (0.0-1.0)",
+        "payload": {
+          "action_type": "purchase_order|expedite_request|alternative_source|quantity_change",
+          "supplier_name": "string",
+          "sku": "string",
+          "quantity": "integer",
+          "po_value_usd": "number",
+          "urgency": "standard|expedited|critical"
+        },
+        "reasoning_trace": "string"
+      }
+    },
+    {
+      "detail_type": "ShipmentETAUpdate",
+      "source_pattern": "supply-chain.agent.logistics",
+      "description": "Published when the logistics agent assigns a carrier or updates an ETA.",
+      "schema": {
+        "agent_id": "string",
+        "decision_id": "string",
+        "timestamp": "ISO-8601",
+        "payload": {
+          "estimated_delivery": "ISO-8601 date",
+          "carrier": "string",
+          "mode": "ground_ltl|ground_ftl|intermodal|air|ocean",
+          "route": "string (origin → destination)"
+        }
+      }
+    },
+    {
+      "detail_type": "CoordinatedResponsePlan",
+      "source_pattern": "supply-chain.agent.disruption-response",
+      "description": "Published when the disruption agent generates a cross-domain response plan.",
+      "schema": {
+        "decision_id": "string",
+        "timestamp": "ISO-8601",
+        "severity": "low|medium|high|critical",
+        "response_actions": [
+          {
+            "target_agent": "string",
+            "action": "string",
+            "priority": "integer (1-5)",
+            "deadline_hours": "integer"
+          }
+        ],
+        "executive_summary": "string",
+        "confidence": "number (0.0-1.0)"
+      }
+    },
+    {
+      "detail_type": "ERPConfirmation",
+      "source_pattern": "supply-chain.integration.erp",
+      "description": "Published when the ERP successfully executes a decision.",
+      "schema": {
+        "decision_id": "string",
+        "originating_agent": "string",
+        "action_type": "string",
+        "erp_document_id": "string",
+        "status": "confirmed",
+        "timestamp": "ISO-8601"
+      }
+    },
+    {
+      "detail_type": "ERPRejection",
+      "source_pattern": "supply-chain.integration.erp",
+      "description": "Published when the ERP rejects a decision. Originating agent must replan.",
+      "schema": {
+        "decision_id": "string",
+        "originating_agent": "string",
+        "action_type": "string",
+        "reason": "string",
+        "status": "rejected",
+        "timestamp": "ISO-8601"
+      }
+    },
+    {
+      "detail_type": "ImpactAssessment",
+      "source_pattern": "supply-chain.agent.disruption-response",
+      "description": "Published for dashboard consumption when a disruption's business impact is assessed.",
+      "schema": {
+        "decision_id": "string",
+        "severity": "low|medium|high|critical",
+        "revenue_at_risk_usd": "number",
+        "customer_impact": "boolean",
+        "escalation_reason": "string",
+        "timestamp": "ISO-8601"
+      }
+    }
+  ]
+}

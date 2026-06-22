@@ -1,0 +1,124 @@
+# Agent Configuration
+# Controls thresholds, model parameters, and guardrails for each agent.
+# Override per-environment by setting AGENT_CONFIG_ENV=prod|staging|dev
+
+global:
+  region: us-east-1
+  event_bus_name: supply-chain-events
+  model_id: anthropic.claude-sonnet-4-20250514
+  fallback_model_id: anthropic.claude-haiku-4-20250514
+  max_tokens: 2048
+  temperature: 0.2
+  decision_log_bucket: supply-chain-decisions
+  escalation_sla_minutes: 240
+
+agents:
+  demand_sensing:
+    lambda_function: sc-agent-demand-sensing
+    memory_mb: 512
+    timeout_seconds: 120
+    confidence_threshold: 0.70
+    max_autonomous_adjustment_pct: 15
+    input_events:
+      - detail_type: POSDataRefresh
+      - detail_type: SocialSignalUpdate
+      - detail_type: WeatherForecastUpdate
+      - detail_type: PromoCalendarChange
+    output_events:
+      - detail_type: DemandAdjustment
+    guardrails:
+      max_daily_adjustments: 500
+      cooldown_seconds: 300
+      require_corroborating_signals: 2
+
+  inventory_allocation:
+    lambda_function: sc-agent-inventory-allocation
+    memory_mb: 512
+    timeout_seconds: 120
+    confidence_threshold: 0.75
+    max_autonomous_transfer_value_usd: 50000
+    input_events:
+      - detail_type: DemandAdjustment
+      - detail_type: InventoryLevelChange
+      - detail_type: ShipmentETAUpdate
+    output_events:
+      - detail_type: TransferOrder
+      - detail_type: AllocationPriority
+    guardrails:
+      max_daily_transfer_value_usd: 500000
+      block_cross_region_without_approval: true
+      service_level_breach_always_escalates: true
+
+  procurement:
+    lambda_function: sc-agent-procurement
+    memory_mb: 512
+    timeout_seconds: 120
+    confidence_threshold: 0.80
+    max_autonomous_po_value_usd: 200000
+    input_events:
+      - detail_type: InventoryDepletionForecast
+      - detail_type: SupplierCapacityUpdate
+      - detail_type: SupplierRiskAlert
+    output_events:
+      - detail_type: PurchaseOrderRecommendation
+      - detail_type: SupplierCommunicationDraft
+    guardrails:
+      new_supplier_always_escalates: true
+      off_contract_pricing_always_escalates: true
+      external_comms_require_human_review: true
+      max_daily_po_count: 50
+
+  logistics:
+    lambda_function: sc-agent-logistics
+    memory_mb: 512
+    timeout_seconds: 120
+    confidence_threshold: 0.75
+    max_cost_overrun_pct: 20
+    input_events:
+      - detail_type: TransferOrder
+      - detail_type: TrafficConditionUpdate
+      - detail_type: PortCongestionAlert
+    output_events:
+      - detail_type: CarrierAssignment
+      - detail_type: ShipmentETAUpdate
+    guardrails:
+      expedited_shipping_always_escalates_above_pct: 20
+      mode_change_always_escalates: true
+      max_daily_shipments: 200
+
+  disruption_response:
+    lambda_function: sc-agent-disruption-response
+    memory_mb: 1024
+    timeout_seconds: 300
+    confidence_threshold: 0.65
+    max_autonomous_impact_value_usd: 500000
+    input_events:
+      - detail_type: DisruptionEvent
+      - detail_type: SupplierRiskAlert
+      - detail_type: QualityRecallNotice
+    output_events:
+      - detail_type: CoordinatedResponsePlan
+      - detail_type: ImpactAssessment
+      - detail_type: ExecutiveSummary
+    guardrails:
+      customer_commitment_impact_always_escalates: true
+      vp_escalation_threshold_usd: 500000
+      max_concurrent_responses: 3
+      similar_disruption_retrieval_count: 5
+
+escalation:
+  queue_name: escalation-queue
+  sns_topic: planner-notifications
+  notification_channels:
+    - email
+    - slack
+  sla_breach_alert_minutes: 180
+  auto_approve_if_no_response_hours: null  # Never auto-approve — stale escalations re-queue
+
+circuit_breaker:
+  enabled: true
+  window_minutes: 60
+  max_decisions_per_window: 1000
+  max_total_value_per_window_usd: 2000000
+  trip_action: pause_all_agents_and_notify
+  reset_requires: manual_acknowledgment
