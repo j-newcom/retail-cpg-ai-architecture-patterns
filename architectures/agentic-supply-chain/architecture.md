@@ -59,24 +59,36 @@ Each agent owns a specific decision domain. Agents do not share responsibilities
 **Responsibility:** Detect demand shifts earlier than statistical models alone can capture.
 
 **Inputs:**
-- POS data (batch, 4-hour refresh from retailer EDI feeds)
-- Social media signal scores (real-time, from pre-trained sentiment classifiers)
-- Weather forecasts (daily, regional)
-- Promotional calendar (weekly updates from trade marketing)
-- Competitor pricing signals (daily scrapes, where legally permitted)
+
+- POS data (batch, 4-hour refresh from retailer EDI feeds\
+
+\Social media signal scores (real-time, from pre-trained sentiment classifiers\
+
+\Weather forecasts (daily, regional\
+
+\Promotional calendar (weekly updates from trade marketing\
+
+\Competitor pricing signals (daily scrapes, where legally permitted)
 
 **Outputs:**
-- Demand adjustment signals (per SKU-location, published to EventBridge)
-- Confidence score (0.0 to 1.0)
-- Reasoning trace (natural language explanation of why the adjustment was made)
+
+- Demand adjustment signals (per SKU-location, published to EventBridge\
+
+\Confidence score (0.0 to 1.0\
+
+\Reasoning trace (natural language explanation of why the adjustment was made)
 
 **Foundation Model Use:**
-- Synthesizing unstructured signals (news articles about ingredient shortages, social trends) into structured demand impact assessments
-- Generating human-readable explanations for planners when escalation occurs
+
+- Synthesizing unstructured signals (news articles about ingredient shortages, social trends) into structured demand impact assessment\
+
+\Generating human-readable explanations for planners when escalation occurs
 
 **Decision Boundary:**
-- Can adjust demand forecasts by up to +/- 15% without human approval
-- Adjustments beyond 15% route to demand planning team with full context
+
+- Can adjust demand forecasts by up to +/- 15% without human approva\
+
+\Adjustments beyond 15% route to demand planning team with full context
 
 ---
 
@@ -85,25 +97,38 @@ Each agent owns a specific decision domain. Agents do not share responsibilities
 **Responsibility:** Determine optimal stock positioning across distribution network.
 
 **Inputs:**
-- Current inventory levels by DC and store (real-time from WMS)
-- Demand adjustment signals from Demand Sensing Agent
-- Inbound shipment ETAs from Logistics Agent
-- Shelf-life constraints (from product master data)
-- Service level targets by channel (from commercial agreements)
+
+- Current inventory levels by DC and store (real-time from WMS\
+
+\Demand adjustment signals from Demand Sensing Agen\
+
+\Inbound shipment ETAs from Logistics Agen\
+
+\Shelf-life constraints (from product master data\
+
+\Service level targets by channel (from commercial agreements)
 
 **Outputs:**
-- Transfer orders between DCs
-- Allocation priorities when stock is constrained
-- Pre-positioning recommendations ahead of anticipated demand events
+
+- Transfer orders between DC\
+
+\Allocation priorities when stock is constraine\
+
+\Pre-positioning recommendations ahead of anticipated demand events
 
 **Foundation Model Use:**
-- Reasoning about trade-offs when multiple constraints conflict (e.g., freshness vs. fill rate vs. transportation cost)
-- Generating scenario comparisons for planner review during constrained periods
+
+- Reasoning about trade-offs when multiple constraints conflict (e.g., freshness vs. fill rate vs. transportation cost\
+
+\Generating scenario comparisons for planner review during constrained periods
 
 **Decision Boundary:**
-- Can execute transfers below $50K value automatically
-- Transfers above $50K or cross-region movements require planner approval
-- Any allocation that would breach a contractual service level escalates immediately
+
+- Can execute transfers below $50K value automaticall\
+
+\Transfers above $50K or cross-region movements require planner approva\
+
+\Any allocation that would breach a contractual service level escalates immediately
 
 ---
 
@@ -112,25 +137,38 @@ Each agent owns a specific decision domain. Agents do not share responsibilities
 **Responsibility:** Manage supplier ordering, negotiate quantities, and respond to supply disruptions.
 
 **Inputs:**
-- Inventory depletion forecasts from Allocation Agent
-- Supplier capacity and lead time data (from SRM portal)
-- Contract terms and pricing tiers (from procurement system)
-- Quality incident history (from QA database)
+
+- Inventory depletion forecasts from Allocation Agen\
+
+\Supplier capacity and lead time data (from SRM portal\
+
+\Contract terms and pricing tiers (from procurement system\
+
+\Quality incident history (from QA database)
 
 **Outputs:**
-- Purchase order recommendations
-- Supplier communication drafts (for human review before sending)
-- Alternative sourcing recommendations when primary supplier is constrained
+
+- Purchase order recommendation\
+
+\Supplier communication drafts (for human review before sending\
+
+\Alternative sourcing recommendations when primary supplier is constrained
 
 **Foundation Model Use:**
-- Drafting supplier communications (expedite requests, quantity change notifications)
-- Analyzing supplier risk signals from news and financial filings
-- Recommending alternative suppliers based on historical performance similarity
+
+- Drafting supplier communications (expedite requests, quantity change notifications\
+
+\Analyzing supplier risk signals from news and financial filing\
+
+\Recommending alternative suppliers based on historical performance similarity
 
 **Decision Boundary:**
-- Can place POs within contracted terms and existing approved supplier list automatically
-- New suppliers, off-contract pricing, or POs above $200K require procurement manager approval
-- All external communications route through human review before sending
+
+- Can place POs within contracted terms and existing approved supplier list automaticall\
+
+\New suppliers, off-contract pricing, or POs above $200K require procurement manager approva\
+
+\All external communications route through human review before sending
 
 ---
 
@@ -139,25 +177,38 @@ Each agent owns a specific decision domain. Agents do not share responsibilities
 **Responsibility:** Optimize transportation routing, carrier selection, and delivery scheduling.
 
 **Inputs:**
-- Transfer orders from Allocation Agent
-- Carrier rate cards and capacity (from TMS)
-- Real-time traffic and weather conditions
-- Delivery window requirements from customer orders
-- Port and terminal congestion data
+
+- Transfer orders from Allocation Agen\
+
+\Carrier rate cards and capacity (from TMS\
+
+\Real-time traffic and weather condition\
+
+\Delivery window requirements from customer order\
+
+\Port and terminal congestion data
 
 **Outputs:**
-- Carrier assignments and route selections
-- Shipment consolidation recommendations
-- ETA updates propagated to downstream agents
+
+- Carrier assignments and route selection\
+
+\Shipment consolidation recommendation\
+
+\ETA updates propagated to downstream agents
 
 **Foundation Model Use:**
-- Reasoning about multi-modal trade-offs (cost vs. speed vs. carbon)
-- Interpreting unstructured disruption reports (port closures, road incidents) into actionable routing changes
+
+- Reasoning about multi-modal trade-offs (cost vs. speed vs. carbon\
+
+\Interpreting unstructured disruption reports (port closures, road incidents) into actionable routing changes
 
 **Decision Boundary:**
-- Can select carriers and routes within budgeted lane rates automatically
-- Expedited shipping (above standard cost by 20%+) requires logistics manager approval
-- Mode changes (e.g., switching from ocean to air) always escalate
+
+- Can select carriers and routes within budgeted lane rates automaticall\
+
+\Expedited shipping (above standard cost by 20%+) requires logistics manager approva\
+
+\Mode changes (e.g., switching from ocean to air) always escalate
 
 ---
 
@@ -166,23 +217,34 @@ Each agent owns a specific decision domain. Agents do not share responsibilities
 **Responsibility:** Coordinate cross-domain response when a material disruption occurs.
 
 **Inputs:**
-- Disruption events (weather, geopolitical, supplier failure, quality recall)
-- Current state from all other agents
-- Historical disruption response playbooks (from vector store)
+
+- Disruption events (weather, geopolitical, supplier failure, quality recall\
+
+\Current state from all other agent\
+
+\Historical disruption response playbooks (from vector store)
 
 **Outputs:**
-- Coordinated response plan (which agents need to take which actions)
-- Impact assessment (revenue at risk, customer impact, timeline)
-- Executive summary for leadership communication
+
+- Coordinated response plan (which agents need to take which actions\
+
+\Impact assessment (revenue at risk, customer impact, timeline\
+
+\Executive summary for leadership communication
 
 **Foundation Model Use:**
-- This agent relies most heavily on foundation models. Its entire job is reasoning under uncertainty across multiple domains.
-- Retrieves similar historical disruptions from vector store and adapts past playbooks to current conditions
-- Generates executive-ready impact summaries
+
+- This agent relies most heavily on foundation models. Its entire job is reasoning under uncertainty across multiple domains\
+
+\Retrieves similar historical disruptions from vector store and adapts past playbooks to current condition\
+
+\Generates executive-ready impact summaries
 
 **Decision Boundary:**
-- Can trigger coordinated responses valued below $500K total impact
-- Any response plan affecting customer commitments or exceeding $500K escalates to VP-level supply chain leadership with full context package
+
+- Can trigger coordinated responses valued below $500K total impac\
+
+\Any response plan affecting customer commitments or exceeding $500K escalates to VP-level supply chain leadership with full context package
 
 ---
 
@@ -238,10 +300,14 @@ graph LR
 ```
 
 **Why this pattern:**
-- **Buffered execution:** Decisions queue in SQS, allowing for batching and rate limiting against ERP API quotas
-- **Translation isolation:** Agent decision format never couples to ERP-specific schemas. When the ERP changes (or is replaced), only the translation service changes.
-- **Validation gate:** Business rules that cannot be encoded in agent guardrails (e.g., fiscal period locks, approval matrix edge cases) get a final check before ERP execution
-- **Confirmation loop:** ERP confirms or rejects. Rejections route back to the agent for replanning.
+
+- **Buffered execution:** Decisions queue in SQS, allowing for batching and rate limiting against ERP API quota\
+
+\**Translation isolation:** Agent decision format never couples to ERP-specific schemas. When the ERP changes (or is replaced), only the translation service changes\
+
+\**Validation gate:** Business rules that cannot be encoded in agent guardrails (e.g., fiscal period locks, approval matrix edge cases) get a final check before ERP executio\
+
+\**Confirmation loop:** ERP confirms or rejects. Rejections route back to the agent for replanning.
 
 ## Guardrails and Safety
 

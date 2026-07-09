@@ -15,11 +15,15 @@ Step-by-step instructions for deploying the Agentic Supply Chain system to an AW
 
 ## Step 1: Enable Bedrock Model Access
 
-1. Open the [Bedrock console](https://console.aws.amazon.com/bedrock/) in your target region
-2. Navigate to **Model access** in the left nav
-3. Click **Manage model access**
-4. Enable **Anthropic Claude Sonnet** (and optionally Claude Haiku as fallback)
-5. Wait for access status to show "Access granted" (typically immediate for on-demand)
+1. Open the [Bedrock console](https://console.aws.amazon.com/bedrock/) in your target regio\
+
+\Navigate to **Model access** in the left na\
+
+\Click **Manage model access*\
+
+\Enable **Anthropic Claude Sonnet** (and optionally Claude Haiku as fallback\
+
+\Wait for access status to show "Access granted" (typically immediate for on-demand)
 
 ## Step 2: Store ERP Credentials
 
@@ -36,10 +40,13 @@ aws secretsmanager create-secret \
 
 Edit `config/agent-config.yaml` to set your environment-specific values:
 
-- **region** — AWS region for deployment
-- **confidence thresholds** — Start conservative (0.80+), loosen as you calibrate
-- **guardrail limits** — Set based on your approval matrix and risk tolerance
-- **model_id** — Update if using a different Bedrock model version
+- **region** — AWS region for deploymen\
+
+\**confidence thresholds** — Start conservative (0.80+), loosen as you calibrat\
+
+\**guardrail limits** — Set based on your approval matrix and risk toleranc\
+
+\**model_id** — Update if using a different Bedrock model version
 
 ## Step 4: Bootstrap CDK
 
@@ -65,12 +72,17 @@ cdk deploy --all --require-approval broadening
 
 CDK will prompt you to approve IAM policy changes. Review them against the policies in the `policies/` directory to verify they match expectations.
 
-**Deployment order (handled automatically by CDK dependencies):**
-1. SupplyChainEventBus
-2. SupplyChainReasoning
-3. SupplyChainAgents
-4. SupplyChainIntegration
-5. SupplyChainMonitoring
+**Deployment order (handled automatically by CDK dependencies):*\
+
+\SupplyChainEventBu\
+
+\SupplyChainReasonin\
+
+\SupplyChainAgent\
+
+\SupplyChainIntegratio\
+
+\SupplyChainMonitoring
 
 ## Step 6: Verify Deployment
 
@@ -101,21 +113,29 @@ Check CloudWatch Logs for the demand-sensing Lambda to verify it processed the e
 
 Before enabling autonomous execution, run agents in shadow mode:
 
-1. Set all confidence thresholds to `1.0` in `agent-config.yaml` (forces all decisions to escalate)
-2. Deploy with `cdk deploy --all`
-3. Monitor the escalation queue — every decision routes to human review
-4. Compare agent recommendations against human decisions for 4 weeks
-5. Track accuracy: what percentage of agent recommendations match the human's final action?
+1. Set all confidence thresholds to `1.0` in `agent-config.yaml` (forces all decisions to escalate\
+
+\Deploy with `cdk deploy --all\
+
+\Monitor the escalation queue — every decision routes to human revie\
+
+\Compare agent recommendations against human decisions for 4 week\
+
+\Track accuracy: what percentage of agent recommendations match the human's final action?
 
 Once accuracy exceeds 85% for a given agent, lower its threshold to the production value and redeploy.
 
 ## Step 8: Production Cutover
 
-1. Lower confidence thresholds to production values (per agent-config.yaml)
-2. Verify monitoring alarms are configured and tested
-3. Confirm on-call rotation is staffed
-4. Deploy with `cdk deploy --all`
-5. Monitor the CloudWatch dashboard for the first 48 hours
+1. Lower confidence thresholds to production values (per agent-config.yaml\
+
+\Verify monitoring alarms are configured and teste\
+
+\Confirm on-call rotation is staffe\
+
+\Deploy with `cdk deploy --all\
+
+\Monitor the CloudWatch dashboard for the first 48 hours
 
 ## Teardown
 
