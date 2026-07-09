@@ -1,5 +1,7 @@
 # Retail & CPG AI Architecture Patterns
 
+[![Lint Docs](https://github.com/j-newcom/retail-cpg-ai-architecture-patterns/actions/workflows/lint.yml/badge.svg)](https://github.com/j-newcom/retail-cpg-ai-architecture-patterns/actions/workflows/lint.yml) [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
 Reference architectures, working prototypes, and technical perspectives on artificial intelligence adoption in Retail and Consumer Packaged Goods.
 
 ## Who This Is For
