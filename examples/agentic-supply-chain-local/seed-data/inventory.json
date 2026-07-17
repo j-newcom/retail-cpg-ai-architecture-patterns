@@ -1,0 +1,9 @@
+[
+  {"sku_location": "CHIPS-BBQ-12OZ|DC-DALLAS", "sku": "CHIPS-BBQ-12OZ", "location": "DC-DALLAS", "units_on_hand": 1200, "daily_velocity": 680, "days_cover": 1.8, "reorder_point": 2720},
+  {"sku_location": "CHIPS-BBQ-12OZ|DC-ATLANTA", "sku": "CHIPS-BBQ-12OZ", "location": "DC-ATLANTA", "units_on_hand": 5400, "daily_velocity": 870, "days_cover": 6.2, "reorder_point": 3480},
+  {"sku_location": "CHIPS-BBQ-12OZ|DC-CHICAGO", "sku": "CHIPS-BBQ-12OZ", "location": "DC-CHICAGO", "units_on_hand": 3100, "daily_velocity": 720, "days_cover": 4.3, "reorder_point": 2880},
+  {"sku_location": "SODA-COLA-24PK|DC-DALLAS", "sku": "SODA-COLA-24PK", "location": "DC-DALLAS", "units_on_hand": 8200, "daily_velocity": 1450, "days_cover": 5.7, "reorder_point": 5800},
+  {"sku_location": "SODA-COLA-24PK|DC-ATLANTA", "sku": "SODA-COLA-24PK", "location": "DC-ATLANTA", "units_on_hand": 2100, "daily_velocity": 1200, "days_cover": 1.75, "reorder_point": 4800},
+  {"sku_location": "CEREAL-OAT-18OZ|DC-DALLAS", "sku": "CEREAL-OAT-18OZ", "location": "DC-DALLAS", "units_on_hand": 4500, "daily_velocity": 340, "days_cover": 13.2, "reorder_point": 1360},
+  {"sku_location": "CEREAL-OAT-18OZ|DC-CHICAGO", "sku": "CEREAL-OAT-18OZ", "location": "DC-CHICAGO", "units_on_hand": 900, "daily_velocity": 410, "days_cover": 2.2, "reorder_point": 1640}
+]

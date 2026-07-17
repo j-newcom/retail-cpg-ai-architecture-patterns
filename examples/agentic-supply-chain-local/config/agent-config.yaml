@@ -1,0 +1,43 @@
+# Agent Decision Boundaries
+# These thresholds control when each agent acts autonomously vs. escalates
+
+agents:
+  demand_sensing:
+    max_autonomous_adjustment_pct: 15
+    confidence_threshold: 0.6
+    escalation_target: "demand-planning-team"
+    signal_sources:
+      - pos_data
+      - promo_calendar
+      - weather_forecast
+
+  inventory_allocation:
+    max_autonomous_transfer_value_usd: 50000
+    min_days_cover_trigger: 2.5
+    target_days_cover: 4.0
+    escalation_target: "supply-chain-planner"
+
+  procurement:
+    max_autonomous_po_value_usd: 200000
+    approved_suppliers_only: true
+    require_human_review_for_external_comms: true
+    escalation_target: "procurement-manager"
+
+  logistics:
+    max_expedite_cost_premium_pct: 20
+    preferred_carriers:
+      - FEDEX-FREIGHT
+      - UPS-LTL
+      - XPO-LOGISTICS
+    escalation_target: "logistics-manager"
+
+  disruption_response:
+    auto_playbook_similarity_threshold: 0.7
+    max_impact_for_auto_response_usd: 1000000
+    escalation_target: "supply-chain-leadership"
+
+# Demo settings
+demo:
+  processing_delay_seconds: 1.0
+  verbose_reasoning: true
+  simulate_failures: false

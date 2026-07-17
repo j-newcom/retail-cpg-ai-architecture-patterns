@@ -1,0 +1,46 @@
+{
+  "CHIPS-BBQ-12OZ": {
+    "DC-DALLAS": {
+      "baseline_daily_units": 600,
+      "last_7_day_avg": 710,
+      "last_30_day_avg": 620,
+      "trend": "increasing",
+      "active_promotions": ["summer-grilling-2026"],
+      "seasonal_factor": 1.15
+    },
+    "DC-ATLANTA": {
+      "baseline_daily_units": 870,
+      "last_7_day_avg": 850,
+      "last_30_day_avg": 860,
+      "trend": "stable",
+      "active_promotions": [],
+      "seasonal_factor": 1.0
+    },
+    "DC-CHICAGO": {
+      "baseline_daily_units": 720,
+      "last_7_day_avg": 690,
+      "last_30_day_avg": 710,
+      "trend": "stable",
+      "active_promotions": [],
+      "seasonal_factor": 0.95
+    }
+  },
+  "SODA-COLA-24PK": {
+    "DC-DALLAS": {
+      "baseline_daily_units": 1400,
+      "last_7_day_avg": 1480,
+      "last_30_day_avg": 1420,
+      "trend": "slightly_increasing",
+      "active_promotions": [],
+      "seasonal_factor": 1.2
+    },
+    "DC-ATLANTA": {
+      "baseline_daily_units": 1200,
+      "last_7_day_avg": 1350,
+      "last_30_day_avg": 1180,
+      "trend": "increasing",
+      "active_promotions": ["july-4-blowout"],
+      "seasonal_factor": 1.25
+    }
+  }
+}

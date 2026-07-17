@@ -1,0 +1,35 @@
+[
+  {
+    "supplier_id": "SUP-FRITO-001",
+    "name": "Frito-Lay Distribution",
+    "category": "snacks",
+    "lead_time_days": 3,
+    "min_order_qty": 500,
+    "max_capacity_weekly": 25000,
+    "current_utilization_pct": 72,
+    "reliability_score": 0.94,
+    "contracted_skus": ["CHIPS-BBQ-12OZ", "CHIPS-PLAIN-12OZ", "CHIPS-RANCH-12OZ"]
+  },
+  {
+    "supplier_id": "SUP-COCA-001",
+    "name": "Coca-Cola Consolidated",
+    "category": "beverages",
+    "lead_time_days": 2,
+    "min_order_qty": 200,
+    "max_capacity_weekly": 50000,
+    "current_utilization_pct": 85,
+    "reliability_score": 0.97,
+    "contracted_skus": ["SODA-COLA-24PK", "SODA-DIET-24PK", "SODA-ZERO-24PK"]
+  },
+  {
+    "supplier_id": "SUP-GENM-001",
+    "name": "General Mills Supply",
+    "category": "cereal",
+    "lead_time_days": 5,
+    "min_order_qty": 300,
+    "max_capacity_weekly": 15000,
+    "current_utilization_pct": 61,
+    "reliability_score": 0.91,
+    "contracted_skus": ["CEREAL-OAT-18OZ", "CEREAL-HONEY-16OZ"]
+  }
+]

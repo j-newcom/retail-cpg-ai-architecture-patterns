@@ -1,0 +1,50 @@
+{
+  "event_bus": "supply-chain-bus",
+  "rules": [
+    {
+      "name": "demand-signal-to-sensing",
+      "description": "Route incoming demand signals to the Demand Sensing Agent",
+      "event_pattern": {
+        "source": ["supply-chain.signals"],
+        "detail-type": ["demand.signal.received"]
+      },
+      "target": "demand-sensing-agent"
+    },
+    {
+      "name": "demand-adjustment-to-allocation",
+      "description": "Route demand adjustments to Inventory Allocation Agent",
+      "event_pattern": {
+        "source": ["supply-chain.demand-sensing"],
+        "detail-type": ["demand.adjustment.published"]
+      },
+      "target": "inventory-allocation-agent"
+    },
+    {
+      "name": "transfer-request-to-logistics",
+      "description": "Route transfer requests to Logistics Agent",
+      "event_pattern": {
+        "source": ["supply-chain.inventory-allocation"],
+        "detail-type": ["inventory.transfer.requested"]
+      },
+      "target": "logistics-agent"
+    },
+    {
+      "name": "low-stock-to-procurement",
+      "description": "Route low-stock alerts to Procurement Agent",
+      "event_pattern": {
+        "source": ["supply-chain.inventory-allocation"],
+        "detail-type": ["inventory.reorder.needed"]
+      },
+      "target": "procurement-agent"
+    },
+    {
+      "name": "disruption-to-response",
+      "description": "Route disruption events to Disruption Response Agent",
+      "event_pattern": {
+        "source": ["supply-chain.signals"],
+        "detail-type": ["disruption.detected"]
+      },
+      "target": "disruption-response-agent"
+    }
+  ]
+}
