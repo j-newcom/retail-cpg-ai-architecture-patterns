@@ -43,6 +43,14 @@ Lightweight utilities that demonstrate a concept without the overhead of a full 
 
 - [Supply Chain Anomaly Detection](scripts/supply-chain-anomaly-detection/) — Statistical + ML hybrid approach for identifying demand signal disruptions
 
+### Examples (Runnable Locally)
+
+Clone and run with Docker Compose — no AWS account needed.
+
+| Example | What It Does |
+|---|---|
+| [Agentic Supply Chain (Local)](examples/agentic-supply-chain-local/) | Full 5-agent supply chain system running on [Floci](https://github.com/floci-io/floci) (free local AWS emulator). `docker compose up` and watch demand sensing, inventory allocation, procurement, logistics, and disruption response agents make decisions in sequence. |
+
 ## Design Principles
 
 Every architecture in this repo follows these constraints:
